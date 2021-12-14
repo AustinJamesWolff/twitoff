@@ -17,3 +17,16 @@ class User(DB.Model):
 
     # Username Column Schema
     username = DB.Column(DB.String, nullable=False)
+    # the backref down below adds a list of tweets here
+
+class Tweet(DB.Model):
+    # ID Schema
+    id = DB.Column(DB.BigInteger, primary_key=True, nullable=False)
+    # Text Schema
+    text = DB.Column(DB.Unicode(300), nullable=False)
+    # User Schema
+    user_id = DB.Column(DB.BigInteger, DB.ForeignKey('user.id'), nullable=False)
+    # Set up a relatonship between tweets and IDs
+    # This will automatically add a new id to both 
+    # the tweet and the user
+    user = DB.relationship('User', backref=DB.backref('tweets'), lazy=True)
