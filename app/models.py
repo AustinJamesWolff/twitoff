@@ -29,4 +29,6 @@ class Tweet(DB.Model):
     # Set up a relatonship between tweets and IDs
     # This will automatically add a new id to both 
     # the tweet and the user
+    embeddings = DB.Column(DB.PickleType, nullable=False)
     user = DB.relationship('User', backref=DB.backref('tweets'), lazy=True)
+    

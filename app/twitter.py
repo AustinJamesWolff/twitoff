@@ -1,6 +1,5 @@
 import requests
 import ast
-
 import spacy
 
 # Local import
@@ -15,7 +14,7 @@ def get_user_and_tweets(username):
     # Use the `literal_eval` method to turn the JSON response into a Python dictionary
     user = ast.literal_eval(requests.get(HEROKU_URL + username).text)
 
-    # nlp = spacy.load('my_model')
+    nlp = spacy.load('my_model')
     # nlp = spacy.load('src/my_nlp_model')
 
     try:
@@ -43,7 +42,7 @@ def get_user_and_tweets(username):
 
                 # Otherwise, add a new Tweet record
                 db_tweet = Tweet(id=tweet['id'], text=tweet_text, 
-                # embeddings=nlp(tweet_text).vector
+                embeddings=nlp(tweet_text).vector
                 )
 
                 # Append it to the User instance
