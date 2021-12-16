@@ -76,4 +76,5 @@ def create_app():
                 user1 if prediction else user0, 
                 user0 if prediction else user1)
         return render_template('prediction.html', title='Prediction', message=message)
+        
     return app
