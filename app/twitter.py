@@ -1,3 +1,4 @@
+from numpy import vectorize
 import requests
 import ast
 import spacy
@@ -13,6 +14,7 @@ def get_user_and_tweets(username):
 
     # Use the `literal_eval` method to turn the JSON response into a Python dictionary
     user = ast.literal_eval(requests.get(HEROKU_URL + username).text)
+    # print(user)
 
     nlp = spacy.load('my_model')
     # nlp = spacy.load('src/my_nlp_model')
@@ -27,6 +29,8 @@ def get_user_and_tweets(username):
             db_user = User(id=user['twitter_handle']['id'],
                            username=user['twitter_handle']['username'])
             DB.session.add(db_user)
+    
+
 
         # If we don't add any tweets this session, we will make a note of it
         tweets_added = 0
@@ -39,6 +43,7 @@ def get_user_and_tweets(username):
                 break
             else:
                 tweet_text = tweet['full_text']
+                # tweet_vector = vectorize(tweet['full_text'])
 
                 # Otherwise, add a new Tweet record
                 db_tweet = Tweet(id=tweet['id'], text=tweet_text, 
@@ -60,6 +65,11 @@ def get_user_and_tweets(username):
 
     DB.session.commit()
 
+
     return tweets_added
 
+nlp = spacy.load('my_model')
+def vectorize_tweet(tweet_text):
+    # return the word embedding for a given string of text
+    return nlp(tweet_text).vector
 

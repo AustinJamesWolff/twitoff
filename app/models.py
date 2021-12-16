@@ -19,6 +19,9 @@ class User(DB.Model):
     username = DB.Column(DB.String, nullable=False)
     # the backref down below adds a list of tweets here
 
+    def __repr__(self):
+        return f'<User: {self.username}>'
+
 class Tweet(DB.Model):
     # ID Schema
     id = DB.Column(DB.BigInteger, primary_key=True, nullable=False)
@@ -31,4 +34,7 @@ class Tweet(DB.Model):
     # the tweet and the user
     embeddings = DB.Column(DB.PickleType, nullable=False)
     user = DB.relationship('User', backref=DB.backref('tweets'), lazy=True)
+
+    def __repr__(self):
+        return f'<User: {self.text}>'
     
